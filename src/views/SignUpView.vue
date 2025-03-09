@@ -54,11 +54,17 @@ const handleSubmit = async () => {
         }
         return
       }
-      localStorage.setItem('isLogin', 'true')
+      localStorage.setItem('isAuth', 'true')
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('expiryDate', data.expiryDate)
+      localStorage.setItem('userId', data.userId)
+      const remainingMilliseconds = 60 * 60 * 1000
+      const expiryDate = new Date(new Date().getTime() + remainingMilliseconds)
+      localStorage.setItem('expiryDate', expiryDate.toISOString())
       router.push('/')
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err)  
     })
 }
 </script>

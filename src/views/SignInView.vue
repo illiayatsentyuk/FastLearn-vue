@@ -2,9 +2,12 @@
 import { ref } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
+import { useRouter } from 'vue-router'
+
 const email = ref('')
 const password = ref('')
 const error = ref('')
+const router = useRouter()
 
 const API_URL = 'http://localhost:3000'
 
@@ -40,7 +43,13 @@ const handleSubmit = async () => {
         }
         return
       }
-      localStorage.setItem('isLogin', 'true')
+      localStorage.setItem('isAuth', 'true')
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('expiryDate', data.expiryDate)
+      localStorage.setItem('userId', data.userId)
+      const remainingMilliseconds = 60 * 60 * 1000
+      const expiryDate = new Date(new Date().getTime() + remainingMilliseconds)
+      localStorage.setItem('expiryDate', expiryDate.toISOString())
       router.push('/')
     })
     .catch((err) => {
