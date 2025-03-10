@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useLayout } from '../composables/useLayout.ts'
+import MainLayout from '../layouts/MyFirstLayout.vue'
 
 onMounted(() => {
+  const { setLayout } = useLayout()
+  setLayout(MainLayout)
   const token = localStorage.getItem('token')
   const expiryDate = localStorage.getItem('expiryDate')
   if (!token || !expiryDate) {
@@ -22,13 +26,13 @@ onMounted(() => {
 const isAuth = ref(localStorage.getItem('isAuth') === 'true')
 const data = ref('')
 
-const handleLogout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('expiryDate')
-  localStorage.removeItem('userId')
-  localStorage.removeItem('isAuth')
-  isAuth.value = false
-}
+// const handleLogout = () => {
+//   localStorage.removeItem('token')
+//   localStorage.removeItem('expiryDate')
+//   localStorage.removeItem('userId')
+//   localStorage.removeItem('isAuth')
+//   isAuth.value = false
+// }
 
 const sendRequest = async () => {
   const token = localStorage.getItem('token')
@@ -44,14 +48,6 @@ const sendRequest = async () => {
 </script>
 
 <template>
-  <header>
-    <router-link to="/">Home</router-link>
-    <ul>
-      <router-link to="/signin" v-if="!isAuth">Sign in</router-link>
-      <router-link to="/signup" v-if="!isAuth">Sign up</router-link>
-      <a href="#" @click="handleLogout" v-if="isAuth">Logout</a>
-    </ul>
-  </header>
   <h1>Home page</h1>
   <div v-if="isAuth">
     <p>Welcome to the home page</p>
